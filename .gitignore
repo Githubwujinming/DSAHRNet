@@ -1,0 +1,26 @@
+.DS_Store
+checkpoints/
+results/
+result/
+build/
+*.pth
+*/*.pth
+*/*/*.pth
+torch.egg-info/
+*/*.pyc
+*/**/*.pyc
+*/**/**/*.pyc
+*/**/**/**/*.pyc
+*/**/**/**/**/*.pyc
+*/*.so*
+*/**/*.so*
+*/**/*.dylib*
+.idea
+*.gv
+*.json
+*.onnx
+demo.py
+demo.py
+# val.py
+*.ipynb
+web_results/*
