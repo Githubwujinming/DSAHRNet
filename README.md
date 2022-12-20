@@ -236,7 +236,7 @@ white for true positive, black for true negative, red for false positive, and bl
 </table>
 
 ## Visualization of feature maps
-This grad_cam is modified from [pytorch-grad-cam](https://github.com/jacobgil/pytorch-grad-cam) for change detection
+This grad_cam is modified from [pytorch-grad-cam](https://github.com/jacobgil/pytorch-grad-cam) for change detection, see examples in scrpt util/grad_vis.py
 ```python
 '''
 supported grad_cam: GradCAM,HiResCAM,GradCAMElementWise,GradCAMPlusPlus,XGradCAM,EigenCAM,EigenGradCAM,LayerCAM.
