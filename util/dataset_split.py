@@ -62,11 +62,39 @@ def moveFile(Dir,splited_dir,train_ratio=0.8,val_ratio=0.1, test_ratio=0.1):
     #     shutil.move(os.path.join(Dir, name), os.path.join(Dir, 'val'))
 
 
+
+def splitData(Dir,splited_dir,train_ratio=10):
+    if not os.path.exists(os.path.join(splited_dir, 'train%s'%train_ratio)):
+        os.makedirs(os.path.join(splited_dir, 'train%s'%train_ratio))
+
+    filenames = []
+    Adir = os.path.join(Dir,'A')
+    Bdir = os.path.join(Dir,'B')
+    Ldir = os.path.join(Dir,'label')
+    for root,dirs,files in os.walk(Adir):
+        for name in files:
+            filenames.append(name) 
+        break
+    filenum = len(filenames)
+    # print(filenames)
+    num_train = int(filenum * train_ratio/100)
+    sample_train = random.sample(filenames, num_train)
+    for name in sample_train:
+        check_dir(os.path.join(splited_dir, 'train%s'%train_ratio,'A'))
+        check_dir(os.path.join(splited_dir, 'train%s'%train_ratio,'B'))
+        check_dir(os.path.join(splited_dir, 'train%s'%train_ratio,'label'))
+        shutil.copy(os.path.join(Adir, name), os.path.join(splited_dir, 'train%s'%train_ratio,'A',name))
+        shutil.copy(os.path.join(Bdir, name), os.path.join(splited_dir, 'train%s'%train_ratio,'B', name))
+        shutil.copy(os.path.join(Ldir, name), os.path.join(splited_dir, 'train%s'%train_ratio,'label', name))
+
 if __name__ == '__main__':
-    Dir = '../datasets/BCD/BCDD_cropped256/'
-    splited_dir = '../datasets/BCD/BCDD_splited_cropped256/'
-    check_dir(splited_dir)
-    moveFile(Dir,splited_dir)
+    # Dir = '../datasets/BCD/LEVIR-CD_cropped256/'
+    # splited_dir = '../datasets/BCD/BCDD_splited_cropped256/'
+    # check_dir(splited_dir)
+    # moveFile(Dir,splited_dir)
+    Dir = '../datasets/SYSU-CD/train'
+    splited_dir = '../datasets/SYSU-CD'
+    splitData(Dir, splited_dir, train_ratio=10)
     # for root,dirs,files in os.walk(Dir):
     #     for name in dirs:
     #         folder = os.path.join(root, name)
