@@ -36,6 +36,47 @@ def plot_macs_params_f1():
         plt.show()
         fig.savefig('p.jpg')
         fig.savefig('macs_params_f1.pdf')
+def plot_bs_f1():
+    f1 = [83.46,83.49,83.36,83.31]
+    bs = [4,8,16,32]
+    pparam = dict(xlabel='Batch size', ylabel=r'F1 (%)')
+    fig = plt.figure()
+    with plt.style.context(['ieee']):
+        
+        f = plt.figure(figsize=(7, 4))
+        plt.plot(bs, f1, label='Twitter', marker='o', color='black')
+        for x, y in zip(bs, f1):
+            plt.text(x-1.12, y+0.03, '%.2f' % y,fontdict={'fontsize':8})
+        plt.xlim(left=1, right=40)#x 轴范围
+        plt.ylim(bottom=83, top=84)# y 轴范围
+        plt.xticks(bs, ['4', '8', '16', '32'], fontsize=12)# 把x 的坐标刻度用第二个参数的字符串代替
+        plt.ylabel('F1 (%)', fontsize=14)
+        plt.xlabel('Batch size', fontsize=14)
+        plt.grid(alpha=0.5, linestyle='--')# 设置网络线
+        plt.show()
+        f.savefig("bs_f1.pdf", bbox_inches='tight')
+        f.savefig("bs_f1.png", bbox_inches='tight')
 
+def plot_lr_f1():
+    f1 = [82.74,83.15,83.36,83.28]# 顺序 '1e-6', '1e-5', '1e-4', '1e-3'
+    lr = [2, 4, 8, 16]# 顺序 '1e-6', '1e-5', '1e-4', '1e-3'
+    pparam = dict(xlabel='Batch size', ylabel=r'F1 (%)')
+    fig = plt.figure()
+    with plt.style.context(['ieee']):
+        
+        f = plt.figure(figsize=(7, 4))
+        plt.plot(lr, f1, label='Twitter', marker='o', color='black')
+        for x, y in zip(lr, f1):
+            py = y+0.03 if x !=2 else y-0.05
+            plt.text(x-0.57, py, '%.2f' % y,fontdict={'fontsize':8})
+        plt.xlim(left=0, right=20)#x 轴范围
+        plt.ylim(bottom=82.5, top=83.5)# y 轴范围
+        plt.xticks(lr, [r"$1\times10^{-6}$", r'$1\times10^{-5}$', r'$1\times10^{-4}$', r'$1\times10^{-3}$'], fontsize=8)# 把x 的坐标刻度用第二个参数的字符串代替
+        plt.ylabel('F1 (%)', fontsize=14)
+        plt.xlabel('Learning rate', fontsize=14)
+        plt.grid(alpha=0.5, linestyle='--')# 设置网络线
+        plt.show()
+        f.savefig("lr_f1.pdf", bbox_inches='tight')
+        f.savefig("lr_f1.png", bbox_inches='tight')
 if __name__ == '__main__':
-    plot_macs_params_f1()
+    plot_lr_f1()
