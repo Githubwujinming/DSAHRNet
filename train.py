@@ -51,30 +51,6 @@ def make_val_opt(opt):
     val_opt.num_test = np.inf
     return val_opt
 
-def make_test_opt(opt):
-
-    test_opt = copy.deepcopy(opt)
-    test_opt.preprocess = ''  #
-    # hard-code some parameters for test
-    test_opt.num_threads = 4   # test code only supports num_threads = 1
-    test_opt.batch_size = 8   # test code only supports batch_size = 1
-    test_opt.serial_batches = True  # disable data shuffling; comment this line if results on randomly chosen images are needed.
-    test_opt.no_flip = True    # no flip; comment this line if results on flipped images are needed.
-    test_opt.angle = 0
-    test_opt.display_id = -1   # no visdom display; the test code saves the results to a HTML file.
-    test_opt.phase = 'val'
-    test_opt.split = opt.val_split  # function in jsonDataset and ListDataset
-    test_opt.isTrain = False
-    test_opt.aspect_ratio = 1
-    test_opt.results_dir = './results/'
-    test_opt.dataroot = opt.test_dataroot
-    test_opt.dataset_mode = opt.val_dataset_mode
-    test_opt.dataset_type = opt.val_dataset_type
-    test_opt.json_name = opt.val_json_name
-    test_opt.eval = True
-
-    test_opt.num_test = np.inf
-    return test_opt
 
 
 def print_current_acc(log_name, epoch, score):
@@ -88,36 +64,6 @@ def print_current_acc(log_name, epoch, score):
     with open(log_name, "a") as log_file:
         log_file.write('%s\n' % message)  # save the message
 
-def test(opt, model):
-    # global val_dataset
-    opt = make_test_opt(opt)
-    # if val_dataset == None:
-    test_dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
-    # model = create_model(opt)      # create a model given opt.model and other options
-    # model.setup(opt)               # regular setup: load and print networks; create schedulers
-    model.eval()
-    # create a logging file to store training losses
-    log_name = os.path.join(opt.checkpoints_dir, opt.name, 'test_log.txt')
-    with open(log_name, "a") as log_file:
-        now = time.strftime("%c")
-        log_file.write('================ val acc (%s) ================\n' % now)
-
-    running_metrics = AverageMeter()
-    for i, data in enumerate(test_dataset):
-        if i >= opt.num_test:  # only apply our model to opt.num_test images.
-            break
-        model.set_input(data)  # unpack data from data loader
-        score = model.test(val=True)           # run inference
-        running_metrics.update(score)
-        visuals = model.get_current_visuals()  # get image results
-        img_path = model.get_image_paths()     # get image paths
-        if i % 5 == 0:  # save images to an HTML file
-            print('processing (%04d)-th image... %s' % (i, img_path[0]))
-
-    score = running_metrics.get_scores()
-    print_current_acc(log_name, epoch, score)
-
-    return score[metric_name]
 
 def val(opt, model):
     # global val_dataset
